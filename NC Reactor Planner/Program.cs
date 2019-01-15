@@ -36,7 +36,7 @@ namespace NC_Reactor_Planner
             }
 
             Configuration.ResetToDefaults();
-            Reactor.InitializeReactor(1, 1, 1);
+            //Reactor.InitializeReactor(1, 1, 1);
 
             FileInfo defaultConfig = new FileInfo("DefaultConfig.json");
             if (!defaultConfig.Exists)

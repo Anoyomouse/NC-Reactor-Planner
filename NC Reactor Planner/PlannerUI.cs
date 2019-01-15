@@ -65,7 +65,9 @@ namespace NC_Reactor_Planner
 
             SetUIToolTips();
 
-            NewResetLayout(false);
+            NewResetLayout(false); // [TODO] I don't even know anymore okay?
+            NewResetLayout(false); // This makes tooltips work right away but it's still inconsistent
+            //wasted hours on this
         }
 
         private void SetUpToolTips()
@@ -457,7 +459,15 @@ namespace NC_Reactor_Planner
             if (fileName != null)
             {
                 if (saveAll)
-                    Reactor.SaveReactorAsImage(fileName, stats.Lines.Length, (int)imageScale.Value);
+                {
+                    if(drawAllLayers | totalBlocks <= 9500)
+                        Reactor.SaveReactorAsImage(fileName, stats.Lines.Length, (int)imageScale.Value);
+                    else
+                    {
+                        Reactor.SaveReactorAsImage(fileName, stats.Lines.Length, (int)imageScale.Value, true);
+                        NewResetLayout(true);
+                    }
+                }
                 else
                     Reactor.SaveLayerAsImage(layerScrollBar.Value, fileName, (int)imageScale.Value);
             }
