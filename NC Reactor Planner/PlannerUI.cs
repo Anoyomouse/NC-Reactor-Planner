@@ -281,17 +281,8 @@ namespace NC_Reactor_Planner
             else
             {
                 ReactorGridLayer layer;
-                if (totalBlocks > 9500)
-                {
-                    ClearDisposeLayers();
-                    Reactor.ConstructLayer(layerScrollBar.Value);
-                    layer = Reactor.layers.First();
-                }
-                else
-                {
-                    reactorGrid.Controls.Clear();
-                    layer = Reactor.layers[layerScrollBar.Value - 1];
-                }
+                reactorGrid.Controls.Clear();
+                layer = Reactor.layers[layerScrollBar.Value - 1];
 
                 UpdateLocation(layer);
                 reactorGrid.Controls.Add(layer);
