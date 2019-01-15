@@ -246,6 +246,7 @@
             this.reactorGrid.Name = "reactorGrid";
             this.reactorGrid.Size = new System.Drawing.Size(880, 880);
             this.reactorGrid.TabIndex = 16;
+            this.reactorGrid.Paint += new System.Windows.Forms.PaintEventHandler(this.reactorGrid_Paint);
             this.reactorGrid.MouseEnter += new System.EventHandler(this.reactorGrid_MouseEnter);
             // 
             // layerScrollBar
@@ -469,7 +470,7 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.SystemColors.Control;
-            this.ClientSize = new System.Drawing.Size(1264, 952);
+            this.ClientSize = new System.Drawing.Size(1264, 951);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.OpenConfig);
             this.Controls.Add(this.stats);
@@ -494,6 +495,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "NC Reactor Planner";
             this.Load += new System.EventHandler(this.Form1_Load);
+            this.Click += new System.EventHandler(this.PlannerUI_Click);
             ((System.ComponentModel.ISupportInitialize)(this.reactorWidth)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reactorLength)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.reactorHeight)).EndInit();

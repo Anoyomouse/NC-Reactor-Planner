@@ -84,26 +84,19 @@ namespace NC_Reactor_Planner
             for (int x = 0; x < interiorX + 2; x++)
                 for (int y = 0; y < interiorY + 2; y++)
                     for (int z = 0; z < interiorZ + 2; z++)
-                        blocks[x, y, z] = new Block("Air", BlockTypes.Air, Palette.textures["Air"], new Point3D(x, y, z));
+                    {
+                        if ((x == 0 || x == interiorX + 1) ||
+                            (y == 0 || x == interiorY + 1) ||
+                            (z == 0 || x == interiorZ + 1))
+                        {
+                            blocks[x, y, z] = new Casing("Casing", null, new Point3D(x, y, z));
+                        }
+                        else
+                        {
+                            blocks[x, y, z] = new Block("Air", BlockTypes.Air, Palette.textures["Air"], new Point3D(x, y, z));
+                        }
+                    }
 
-            for (int y = 1; y < interiorY + 1; y++)
-                for (int z = 1; z < interiorZ + 1; z++)
-                {
-                    blocks[0, y, z] = new Casing("Casing", null, new Point3D(0, y, z));
-                    blocks[interiorX + 1, y, z] = new Casing("Casing", null, new Point3D(interiorX + 1, y, z));
-                }
-            for (int x = 1; x < interiorX + 1; x++)
-                for (int z = 1; z < interiorZ + 1; z++)
-                {
-                    blocks[x, 0, z] = new Casing("Casing", null, new Point3D(x, 0, z));
-                    blocks[x, interiorY + 1, z] = new Casing("Casing", null, new Point3D(x, interiorY + 1, z));
-                }
-            for (int y = 1; y < interiorY + 1; y++)
-                for (int x = 1; x < interiorX + 1; x++)
-                {
-                    blocks[x, y, interiorZ + 1] = new Casing("Casing", null, new Point3D(x, y, interiorZ + 1));
-                    blocks[x, y, 0] = new Casing("Casing", null, new Point3D(x, y, 0));
-                }
             usedFuel = fuels.First();
             UpdateStats();
             ConstructLayers();
@@ -148,9 +141,7 @@ namespace NC_Reactor_Planner
             else
             {
                 if (sender is ReactorGridLayer layer)
-                    layer.Redraw();
-                else if (sender is ReactorGridCell cell)
-                    layers[(int)cell.block.Position.Y - 1].Redraw();
+                    layer.Refresh();
             }
         }
 
@@ -163,7 +154,7 @@ namespace NC_Reactor_Planner
         {
             foreach (ReactorGridLayer layer in layers)
             {
-                layer.Redraw();
+                layer.Refresh();
             }
         }
 
@@ -412,7 +403,7 @@ namespace NC_Reactor_Planner
                 foreach (ReactorGridLayer layer in layers)
                 {
                     Bitmap layerImage = layer.DrawToImage(scale);
-                    int y = layer.Y - 1;
+                    int y = layer.LayerNumber - 1;
                     gr.DrawImage(layerImage,
                                     new Rectangle((int)((y % layersPerRow) * interiorDims.X * bs + (y % layersPerRow) * bs),
                                                 StatsRectSize.Y + bs + (int)((y / layersPerRow) * interiorDims.Z * bs + (y / layersPerRow) * bs),
@@ -542,18 +533,18 @@ namespace NC_Reactor_Planner
         {
             for (int x = 0; x < interiorDims.X; x++)
                 for (int z = 0; z < interiorDims.Z; z++)
-                    SetBlock(new Block("Air", BlockTypes.Air, Palette.textures["Air"], new Point3D(x + 1, layer.Y, z + 1)), new Point3D(x + 1, layer.Y, z + 1));
+                    SetBlock(new Block("Air", BlockTypes.Air, Palette.textures["Air"], new Point3D(x + 1, layer.LayerNumber, z + 1)), new Point3D(x + 1, layer.LayerNumber, z + 1));
             UpdateStats();
-            layer.Redraw();
+            layer.Refresh();
         }
 
         public static void CopyLayer(ReactorGridLayer layer)
         {
-            PlannerUI.layerBuffer = new Block[layer.X, layer.Z];
-            for (int x = 0; x < layer.X; x++)
-                for (int z = 0; z < layer.Z; z++)
+            PlannerUI.layerBuffer = new Block[layer.LayerWidth, layer.LayerHeight];
+            for (int x = 0; x < layer.LayerWidth; x++)
+                for (int z = 0; z < layer.LayerHeight; z++)
                 {
-                    PlannerUI.layerBuffer[x, z] = blocks[x + 1, layer.Y, z + 1];
+                    PlannerUI.layerBuffer[x, z] = blocks[x + 1, layer.LayerNumber, z + 1];
                 }
         }
 
@@ -561,24 +552,24 @@ namespace NC_Reactor_Planner
         {
             if (PlannerUI.layerBuffer == null)
                 return;
-            if (PlannerUI.layerBuffer.Length != layer.X * layer.Z)
+            if (PlannerUI.layerBuffer.Length != layer.LayerWidth * layer.LayerHeight)
             {
                 System.Windows.Forms.MessageBox.Show("Buffered layer size doesn't match the layout!");
                 return;
             }
 
-            for (int x = 0; x < layer.X; x++)
-                for (int z = 0; z < layer.Z; z++)
+            for (int x = 0; x < layer.LayerWidth; x++)
+                for (int z = 0; z < layer.LayerHeight; z++)
                 {
-                    SetBlock(PlannerUI.layerBuffer[x, z], new Point3D(x + 1, layer.Y, z + 1));
+                    SetBlock(PlannerUI.layerBuffer[x, z], new Point3D(x + 1, layer.LayerNumber, z + 1));
                 }
             UpdateStats();
-            layer.Redraw();
+            layer.Refresh();
         }
 
         public static void DeleteLayer(int y)
         {
-            if (y == 0 | y == interiorDims.Y + 1)
+            if (y == 0 || y == interiorDims.Y + 1)
                 throw new ArgumentException("Tried to delete a casing layer!");
 
             Block[,,] newReactor = new Block[(int)interiorDims.X + 2, (int)interiorDims.Y + 1, (int)interiorDims.Z + 2];

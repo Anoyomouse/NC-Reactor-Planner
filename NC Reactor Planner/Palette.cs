@@ -16,7 +16,7 @@ namespace NC_Reactor_Planner
     public static class Palette
     {
         public static BlockTypes selectedType = BlockTypes.Air;
-        public static ReactorGridCell selectedBlock;
+        public static Block selectedBlock;
 
         public static Dictionary<Block, BlockTypes> blocks = new Dictionary<Block, BlockTypes>();
         public static Dictionary<string, Block> blockPalette;
@@ -35,7 +35,10 @@ namespace NC_Reactor_Planner
 
             textures = new Dictionary<string, Bitmap>();
             while (textureEnumerator.MoveNext())
-                textures.Add((string)textureEnumerator.Key, (Bitmap)textureEnumerator.Value);
+            {
+                if (textureEnumerator.Value is Bitmap)
+                    textures.Add((string)textureEnumerator.Key, (Bitmap)textureEnumerator.Value);
+            }
 
             blockPalette = new Dictionary<string, Block>();
             LoadPalette();
@@ -124,15 +127,14 @@ namespace NC_Reactor_Planner
                 case BlockTypes.Air:
                     return new Block("Air", BlockTypes.Air, textures["Air"], previousBlock.Position);
                 case BlockTypes.Cooler:
-                    return new Cooler((Cooler)selectedBlock.block, previousBlock.Position);
+                    return new Cooler((Cooler)selectedBlock, previousBlock.Position);
                 case BlockTypes.Moderator:
-                    return new Moderator((Moderator)selectedBlock.block, previousBlock.Position);
+                    return new Moderator((Moderator)selectedBlock, previousBlock.Position);
                 case BlockTypes.FuelCell:
-                    return new FuelCell((FuelCell)selectedBlock.block, previousBlock.Position);
+                    return new FuelCell((FuelCell)selectedBlock, previousBlock.Position);
                 default:
                     return new Block("Air", BlockTypes.Air, textures["Air"], previousBlock.Position);
             }
-
         }
 
         public static bool PlacingSameBlock(Block block, MouseButtons placementMethod)
@@ -141,7 +143,7 @@ namespace NC_Reactor_Planner
             switch (placementMethod)
             {
                 case MouseButtons.Left:
-                    blockToPlace = selectedBlock.block.DisplayName;
+                    blockToPlace = selectedBlock.DisplayName;
                     break;
                 case MouseButtons.None:
                     break;

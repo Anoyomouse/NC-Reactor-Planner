@@ -109,9 +109,7 @@
     <Compile Include="FuelCell.cs" />
     <Compile Include="Moderator.cs" />
     <Compile Include="Palette.cs" />
-    <Compile Include="ReactorGridCell.cs">
-      <SubType>Component</SubType>
-    </Compile>
+    <Compile Include="ReactorGridCell.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
@@ -137,6 +135,9 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <SubType>Designer</SubType>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="ReactorGridLayer.resx">
+      <DependentUpon>ReactorGridLayer.cs</DependentUpon>
     </EmbeddedResource>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
@@ -206,6 +207,7 @@
   <ItemGroup>
     <Content Include="Resources\Air.png" />
     <Content Include="Resources\FuelCell.png" />
+    <None Include="Resources\Newtonsoft.Json.dll" />
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">

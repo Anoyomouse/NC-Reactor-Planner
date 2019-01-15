@@ -117,65 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
-  <data name="Air" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Air.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Beryllium" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Beryllium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Copper" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Copper.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Cryotheum" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Cryotheum.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Diamond" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Diamond.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Emerald" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Emerald.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Enderium" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Enderium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="FuelCell" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\FuelCell.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Glowstone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Glowstone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Gold" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Gold.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Graphite" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Graphite.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Helium" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Helium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Iron" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Iron.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Lapis" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Lapis.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Magnesium" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Magnesium.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Newtonsoft_Json" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Newtonsoft.Json.dll;System.Byte[], mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
-  </data>
-  <data name="Quartz" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Quartz.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Redstone" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Redstone.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Tin" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Tin.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
-  <data name="Water" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Water.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
+  <metadata name="$this.TrayLargeIcon" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+    <value>False</value>
+  </metadata>
 </root>

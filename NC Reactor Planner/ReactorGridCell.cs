@@ -5,95 +5,73 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Windows.Media.Media3D;
 
 namespace NC_Reactor_Planner
 {
-    public class ReactorGridCell : PictureBox
+    public class ReactorGridCell
     {
-        public Block block;
-        private bool redrawn;
+        public Block Block { get; set; }
+        public int X { get; set; }
+        public int Z { get; set; }
+        public int LayerNumber { get; set; }
+        //public Image Image { get; set; }
 
-        public void Clicked(object sender, EventArgs e)
+        public ReactorGridCell(int x, int layerNumber, int z)
         {
-            MouseButtons button = ((MouseEventArgs)e).Button;
-            int x = (int)block.Position.X;
-            int y = (int)block.Position.Y;
-            int z = (int)block.Position.Z;
+            X = x;
+            LayerNumber = layerNumber;
+            Z = z;
+        }
 
+        public void Clicked(MouseButtons button)
+        {
             switch (button)
             {
                 case MouseButtons.Left:
-                    Reactor.blocks[x, y, z] = Palette.BlockToPlace(block);
+                    Reactor.blocks[X, LayerNumber, Z] = Palette.BlockToPlace(Block);
                     break;
                 case MouseButtons.None:
                     return;
                 case MouseButtons.Right:
-                    Reactor.blocks[x, y, z] = new Block("Air", BlockTypes.Air, Palette.textures["Air"], block.Position);
+                    Reactor.blocks[X, LayerNumber, Z] = new Block("Air", BlockTypes.Air, Palette.textures["Air"], Block.Position);
                     break;
                 case MouseButtons.Middle:
-                    Reactor.blocks[x, y, z] = new FuelCell("FuelCell", Palette.textures["FuelCell"], block.Position);
+                    Reactor.blocks[X, LayerNumber, Z] = new FuelCell("FuelCell", Palette.textures["FuelCell"], Block.Position);
                     break;
                 default:
                     return;
             }
-            block = Reactor.blocks[x, y, z];
+            Block = Reactor.blocks[X, LayerNumber, Z];
 
             Reactor.UpdateStats();
 
-            ((PlannerUI)Parent.Parent.Parent).RefreshStats();
-
-            RedrawSelf();
+            PlannerUI.Instance.RefreshStats();
             PlannerUI.gridToolTip.Active = true;
         }
 
-        public void Mouse_Move(object sender, EventArgs e)
+        public void Mouse_Move(MouseButtons button)
         {
-            if (((MouseEventArgs)e).Button == MouseButtons.None)
+            if (button == MouseButtons.None)
                 return;
-            if (Palette.PlacingSameBlock(block, ((MouseEventArgs)e).Button))
+            if (Palette.PlacingSameBlock(Block, button))
                 return;
-            Clicked(sender, e);
+            Clicked(button);
         }
 
-        public void Mouse_Down(object sender, EventArgs e)
+        public void Mouse_Down(MouseButtons button)
         {
-            Capture = false;
             PlannerUI.gridToolTip.Active = false;
         }
 
-        public void RedrawSelf()
+        public void DrawSelf(Graphics g, int top_offset, int block_size)
         {
-            block = Reactor.BlockAt(block.Position);
-            if (!Image.Equals(block.Texture))
+            g.DrawImage(Reactor.BlockAt(Block.Position).Texture, (this.X - 1) * block_size, top_offset + (this.Z - 1) * block_size, block_size, block_size);
+            if (Block is Cooler cooler && !cooler.Active)
             {
-                Image.Dispose();
-                Image = new Bitmap(block.Texture);
+                Pen errorPen = new Pen(Color.Red, 1);
+                g.DrawRectangle(errorPen, (this.X - 1) * block_size, top_offset + (this.Z - 1) * block_size, block_size, block_size);
             }
-            if (block is Cooler cooler && !cooler.Active)
-            {
-                using (Graphics g = Graphics.FromImage(Image))
-                {
-                    Pen errorPen = new Pen(Color.Red, 1);
-                    g.DrawRectangle(errorPen, 0, 0, Image.Size.Width-1, Image.Size.Height-1);
-                }
-            }
-            redrawn = true;
-            ResetToolTip();
-        }
-
-        public void ResetToolTip()
-        {
-            PlannerUI.gridToolTip.SetToolTip(this, block.GetToolTip());
-        }
-
-        public bool NeedsRedraw()
-        {
-            return redrawn & block.NeedsRedraw();
-        }
-
-        public void ResetRedrawn()
-        {
-            redrawn = false;
         }
     }
 }

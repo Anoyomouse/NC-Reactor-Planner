@@ -38,7 +38,11 @@ namespace NC_Reactor_Planner
             Version aVersion = Assembly.GetExecutingAssembly().GetName().Version;
             appName = string.Format("NC Reactor Planner v{0}.{1}.{2} ", aVersion.Major, aVersion.Minor, aVersion.Build);
             this.Text = appName;
+
+            Instance = this;
         }
+
+        public static PlannerUI Instance { get; set; }
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -99,10 +103,10 @@ namespace NC_Reactor_Planner
 
             foreach (KeyValuePair<Block, BlockTypes> kvp in Palette.blocks)
             {
-                paletteTable.Controls.Add(new ReactorGridCell { block = kvp.Key, Image = kvp.Key.Texture, SizeMode = PictureBoxSizeMode.Zoom });
+                paletteTable.Controls.Add(new PictureBox { Tag = kvp.Key, Image = kvp.Key.Texture, SizeMode = PictureBoxSizeMode.Zoom });
             }
 
-            foreach (ReactorGridCell paletteBlock in paletteTable.Controls)
+            foreach (PictureBox paletteBlock in paletteTable.Controls)
             {
                 paletteBlock.Click += new EventHandler(PaletteBlockClicked);
                 paletteBlock.MouseEnter += new EventHandler(PaletteBlockHighlighted);
@@ -110,17 +114,17 @@ namespace NC_Reactor_Planner
 
             UpdatePaletteTooltips();
 
-            Palette.selectedBlock = (ReactorGridCell)paletteTable.Controls[0];
-            Palette.selectedType = Palette.selectedBlock.block.BlockType;
+            Palette.selectedBlock = (Block)(paletteTable.Controls[0].Tag);
+            Palette.selectedType = Palette.selectedBlock.BlockType;
 
             paletteTable.MouseLeave += new EventHandler(PaletteBlockLostFocus);
         }
 
         private void UpdatePaletteTooltips()
         {
-            foreach (ReactorGridCell paletteBlock in paletteTable.Controls)
+            foreach (PictureBox paletteBlock in paletteTable.Controls)
             {
-                paletteToolTip.SetToolTip(paletteBlock, paletteBlock.block.GetToolTip());
+                paletteToolTip.SetToolTip(paletteBlock, ((Block)paletteBlock.Tag).GetToolTip());
             }
         }
 
@@ -133,18 +137,20 @@ namespace NC_Reactor_Planner
         {
             borderGraphics.Clear(SystemColors.Control);
 
-            ReactorGridCell selected = Palette.selectedBlock;
-            paletteLabel.Text = selected.block.DisplayName;
+            Block selected = Palette.selectedBlock;
+            paletteLabel.Text = selected.DisplayName;
 
-            borderGraphics.DrawRectangle(borderPen, selected.Location.X - 3, selected.Location.Y - 3, paletteBlockSize, paletteBlockSize);
+            PictureBox box = paletteTable.Controls.Cast<PictureBox>().First(x => x.Tag == selected);
+
+            borderGraphics.DrawRectangle(borderPen, box.Location.X - 3, box.Location.Y - 3, paletteBlockSize, paletteBlockSize);
         }
 
         private void PaletteBlockHighlighted(object sender, EventArgs e)
         {
             borderGraphics.Clear(SystemColors.Control);
 
-            ReactorGridCell paletteBox = (ReactorGridCell)sender;
-            paletteLabel.Text = paletteBox.block.DisplayName;
+            PictureBox paletteBox = (PictureBox)sender;
+            paletteLabel.Text = ((Block)paletteBox.Tag).DisplayName;
 
             borderGraphics.DrawRectangle(highlightPen, paletteBox.Location.X - 3, paletteBox.Location.Y - 3, paletteBlockSize, paletteBlockSize);
         }
@@ -153,10 +159,10 @@ namespace NC_Reactor_Planner
         {
             borderGraphics.Clear(SystemColors.Control);
 
-            ReactorGridCell paletteBox = (ReactorGridCell)sender;
+            PictureBox paletteBox = (PictureBox)sender;
 
-            Palette.selectedBlock = paletteBox;
-            Palette.selectedType = (Palette.blocks[paletteBox.block]);
+            Palette.selectedBlock = ((Block)paletteBox.Tag);
+            Palette.selectedType = (Palette.blocks[Palette.selectedBlock]);
 
             borderGraphics.DrawRectangle(borderPen, paletteBox.Location.X - 3, paletteBox.Location.Y - 3, paletteBlockSize, paletteBlockSize);           
         }
@@ -220,7 +226,7 @@ namespace NC_Reactor_Planner
             {
                 ReactorGridLayer layer = Reactor.layers[layerScrollBar.Value - 1];
                 UpdateLocation(layer);
-                layer.Redraw();
+                layer.Refresh();
                 reactorGrid.Controls.Add(layer);
                 layerScrollBar.Maximum = (int)Reactor.interiorDims.Y;
             }
@@ -287,7 +293,7 @@ namespace NC_Reactor_Planner
 
                 UpdateLocation(layer);
                 reactorGrid.Controls.Add(layer);
-                layer.Redraw();
+                layer.Refresh();
             }
         }
 
@@ -477,8 +483,8 @@ namespace NC_Reactor_Planner
             if (drawAllLayers)
             {
                 int layersPerRow = (int)Math.Ceiling(Math.Sqrt(Reactor.interiorDims.Y));
-                origin = new Point((layer.Y - 1) % layersPerRow * layer.Size.Width + (layer.Y - 1) % layersPerRow * blockSize,
-                                    (layer.Y - 1) / layersPerRow * layer.Size.Height + (layer.Y - 1) / layersPerRow * blockSize);
+                origin = new Point((layer.LayerNumber - 1) % layersPerRow * layer.Size.Width + (layer.LayerNumber - 1) % layersPerRow * blockSize,
+                                    (layer.LayerNumber - 1) / layersPerRow * layer.Size.Height + (layer.LayerNumber - 1) / layersPerRow * blockSize);
             }
             else
             {
@@ -548,6 +554,20 @@ namespace NC_Reactor_Planner
                 this.Text = appName + "   " + loadedSaveFileInfo.FullName;
             else
                 this.Text = appName;
+        }
+
+        private void reactorGrid_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
+
+        private void PlannerUI_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show(
+                Newtonsoft.Json.JsonConvert.SerializeObject(
+                        Reactor.blocks, Newtonsoft.Json.Formatting.Indented
+                    )
+                );
         }
     }
 }
